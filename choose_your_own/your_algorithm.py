@@ -15,7 +15,7 @@ bumpy_fast = [features_train[ii][1] for ii in range(0, len(features_train)) if l
 grade_slow = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==1]
 bumpy_slow = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==1]
 
-
+'''
 #### initial visualization
 plt.xlim(0.0, 1.0)
 plt.ylim(0.0, 1.0)
@@ -26,15 +26,43 @@ plt.xlabel("bumpiness")
 plt.ylabel("grade")
 plt.show()
 ################################################################################
-
-
-### your code here!  name your classifier object clf if you want the 
+'''
+# Modified by Samuele Buosi
+### your code here!  name your classifier object clf if you want the
 ### visualization code (prettyPicture) to show you the decision boundary
 
+# MAKE IT FASTER!!! using 1% of all data
+features_train = features_train[:int(len(features_train)/100)]
+labels_train = labels_train[:int(len(labels_train)/100)]
 
 
+# KNN
+from sklearn import neighbors
 
+clf = neighbors.KNeighborsClassifier(n_neighbors=3)
 
+clf.fit(features_train,labels_train)
+
+predkNN = clf.predict(features_test)
+print('kNN prediction=',predkNN)
+# end KNN
+
+'''
+# adaBoost
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+
+# Create and fit an AdaBoosted decision tree
+clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
+                         algorithm="SAMME",
+                         n_estimators=200)
+
+clf.fit(features_train,labels_train)
+
+predAda = clf.predict(features_test)
+print('AdaBoost prediction=',predAda)
+# end AdaBoost
+'''
 
 
 
