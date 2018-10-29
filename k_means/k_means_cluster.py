@@ -9,6 +9,7 @@ import pickle
 import numpy
 import matplotlib.pyplot as plt
 import sys
+
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 
@@ -43,6 +44,21 @@ def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature
 
 ### load in the dict of dicts containing all the data on each person in the dataset
 data_dict = pickle.load(StrToBytes( open("../final_project/final_project_dataset.pkl", "r") ))
+# Playground with dictionary
+max = 0
+min = 100000000000000
+for person_name in data_dict:
+    if data_dict[person_name]['salary'] != "NaN" and data_dict[person_name]['salary'] > max:
+        max = data_dict[person_name]['salary']
+
+    if data_dict[person_name]['salary'] != "NaN" and data_dict[person_name]['salary'] < min:
+        min = data_dict[person_name]['salary']
+
+print ("MAX:",max, "MIN:", min)
+
+
+
+
 ### there's an outlier--remove it!
 data_dict.pop("TOTAL", 0)
 
@@ -51,8 +67,9 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.)
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 = "total_payments"
 poi  = "poi"
-features_list = [poi, feature_1, feature_2]
+features_list = [poi, feature_1, feature_2,feature_3]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
@@ -61,7 +78,7 @@ poi, finance_features = targetFeatureSplit( data )
 ### you'll want to change this line to
 ### for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
-for f1, f2 in finance_features:
+for f1, f2, _ in finance_features:
     plt.scatter( f1, f2 )
 plt.show()
 
