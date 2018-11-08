@@ -47,6 +47,15 @@ clf = tree.DecisionTreeClassifier()
 clf.fit(features_train, labels_train)
 pred = clf.predict(features_test)
 
-
 acc = accuracy_score( pred,  labels_test)
 print("Accuracy:",acc)
+
+# print features importance
+feat_importance = clf.feature_importances_
+most_important_feat = np.argmax(feat_importance)
+print 'Feature that is most important feature %d with significance %f' % (most_important_feat, np.max(feat_importance))
+voc_list = vectorizer.get_feature_names()
+print 'The corresponding voca word to the most imporant feature: %s' % voc_list[most_important_feat]
+
+outliers = feat_importance > 0.2
+print 'Number of ouliers: %d' % np.sum(outliers)
